@@ -37,9 +37,8 @@ df -i
 mount
 ```
 1. Какая файловая система примонтирована в /
-+/dev/sda4 
++ /dev/sda4 
 2. С какими опциями примонтирована файловая система в /
-+ 
 ```bash
 /dev/sda4 on / type ext4 (rw,relatime,errors=remount-ro)
 ```
