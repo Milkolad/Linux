@@ -181,6 +181,7 @@ user@node-14:~$ smem
 ```bash
 python myfork.py
 ```
+
 ```bash
 13153 ?        00:00:35  \_ gnome-terminal-
 13162 pts/0    00:00:00      \_ bash
