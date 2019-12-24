@@ -142,17 +142,17 @@ WantedBy=multi-user.target
 
 ```bash
 [root@centos7-vm system]\# systemctl start watchlog.timer
-[root@centos7-vm system]\# tail -f /var/log/messages
-Dec 11 21:02:30 centos7-vm atop: PRC | sys    0.05s | user   0.02s | \#proc     82 | \#zombie    0 | \#exit      0 |
-Dec 11 21:02:30 centos7-vm atop: CPU | sys       0% | user      0% | irq       0% | idle    100% | wait      0% |
-Dec 11 21:02:30 centos7-vm atop: CPL | avg1    0.01 | avg5    0.04 | avg15   0.05 | csw      463 | intr     310 |
-Dec 11 21:02:30 centos7-vm atop: MEM | tot   991.2M | free  372.6M | cache 406.7M | buff    2.0M | slab  106.0M |
-Dec 11 21:02:30 centos7-vm atop: SWP | tot     2.0G | free    2.0G |              | vmcom 334.1M | vmlim   2.5G |
-Dec 11 21:02:30 centos7-vm atop: PID SYSCPU USRCPU  VGROW  RGROW  RDDSK  WRDSK  THR S CPUNR  CPU CMD
-Dec 11 21:02:30 centos7-vm atop: 30821  0.03s  0.01s     0K     0K     0K     0K    1 R     0   0% atop
-Dec 11 21:02:30 centos7-vm atop: 1051  0.01s  0.01s     0K     8K     0K     0K    1 S     0   0% systemd-journa
-Dec 11 21:02:30 centos7-vm atop: 17000  0.01s  0.00s     0K     0K     0K     0K    1 S     0   0% kworker/0:1
-Dec 11 21:02:30 centos7-vm atop: 1471  0.00s  0.00s     0K     4K     0K     4K    3 S     0   0% rsyslogd
+milkolad@milkolad-VirtualBox:/var/log$ systemctl status  watchlog.timer
+● watchlog.timer - Run watchlog script every 30 second
+   Loaded: loaded (/etc/systemd/system/watchlog.timer; enabled; vendor preset: enabled)
+   Active: active (elapsed) since Tue 2019-12-24 15:46:34 MSK; 23s ago
+  Trigger: n/a
+
+дек 24 15:46:34 milkolad-VirtualBox systemd[1]: watchlog.timer: Succeeded.
+дек 24 15:46:34 milkolad-VirtualBox systemd[1]: Stopped Run watchlog script every 30 second.
+дек 24 15:46:34 milkolad-VirtualBox systemd[1]: Stopping Run watchlog script every 30 second.
+дек 24 15:46:34 milkolad-VirtualBox systemd[1]: Started Run watchlog script every 30 second.
+
 ...
 ```
 
