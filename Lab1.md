@@ -238,6 +238,7 @@ PrivateTmp=true
 [Install]
 WantedBy=multi-user.target
 ```
+![](screenshots/linux13.png)
 
 ### Окружение файла
 
@@ -254,6 +255,7 @@ Listen 80
 PidFile /var/run/httpd-second.pid
 Listen 8000
 ```
+![](screenshots/linux14.png)
 
 ### Запуск
 
