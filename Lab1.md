@@ -196,47 +196,20 @@ KillMode=process
 WantedBy=multi-user.target
 
 [root@centos7-vm system]# systemctl start spawn-fcgi
-[root@centos7-vm system]# systemctl status spawn-fcgi
+[root@localhost sysconfig]#  systemctl status spawn-fcgi -l
 ● spawn-fcgi.service - Spawn-fcgi startup service
    Loaded: loaded (/etc/systemd/system/spawn-fcgi.service; disabled; vendor preset: disabled)
-   Active: active (running) since Wed 2019-12-11 21:12:26 UTC; 7s ago
- Main PID: 17275 (php-cgi)
-   CGroup: /system.slice/spawn-fcgi.service
-           ├─17275 /usr/bin/php-cgi
-           ├─17276 /usr/bin/php-cgi
-           ├─17277 /usr/bin/php-cgi
-           ├─17278 /usr/bin/php-cgi
-           ├─17279 /usr/bin/php-cgi
-           ├─17280 /usr/bin/php-cgi
-           ├─17281 /usr/bin/php-cgi
-           ├─17282 /usr/bin/php-cgi
-           ├─17283 /usr/bin/php-cgi
-           ├─17284 /usr/bin/php-cgi
-           ├─17285 /usr/bin/php-cgi
-           ├─17286 /usr/bin/php-cgi
-           ├─17287 /usr/bin/php-cgi
-           ├─17288 /usr/bin/php-cgi
-           ├─17289 /usr/bin/php-cgi
-           ├─17290 /usr/bin/php-cgi
-           ├─17291 /usr/bin/php-cgi
-           ├─17292 /usr/bin/php-cgi
-           ├─17293 /usr/bin/php-cgi
-           ├─17294 /usr/bin/php-cgi
-           ├─17295 /usr/bin/php-cgi
-           ├─17296 /usr/bin/php-cgi
-           ├─17297 /usr/bin/php-cgi
-           ├─17298 /usr/bin/php-cgi
-           ├─17299 /usr/bin/php-cgi
-           ├─17300 /usr/bin/php-cgi
-           ├─17301 /usr/bin/php-cgi
-           ├─17302 /usr/bin/php-cgi
-           ├─17303 /usr/bin/php-cgi
-           ├─17304 /usr/bin/php-cgi
-           ├─17305 /usr/bin/php-cgi
-           ├─17306 /usr/bin/php-cgi
-           └─17307 /usr/bin/php-cgi
+   Active: failed (Result: exit-code) since Tue 2019-12-24 09:01:48 EST; 2min 36s ago
+  Process: 12458 ExecStart=/usr/bin/spawn-fcgi -n $OPTIONS (code=exited, status=255)
+ Main PID: 12458 (code=exited, status=255)
 
-Dec 11 21:12:26 centos7-vm systemd[1]: Started Spawn-fcgi startup service.
+Dec 24 09:01:47 localhost.localdomain systemd[1]: Started Spawn-fcgi startup service.
+Dec 24 09:01:47 localhost.localdomain spawn-fcgi[12458]: spawn-fcgi: no FastCGI application given
+Dec 24 09:01:48 localhost.localdomain systemd[1]: spawn-fcgi.service: main process exited, code=exited, status=255/n/a
+Dec 24 09:01:48 localhost.localdomain systemd[1]: Unit spawn-fcgi.service entered failed state.
+Dec 24 09:01:48 localhost.localdomain systemd[1]: spawn-fcgi.service failed.
+
+
 ```
 
 ## Задание 3
@@ -284,7 +257,12 @@ Listen 8000
 
 ### Запуск
 
++
 ```bash
+[root@localhost sysconfig]# systemctl start httpd@second
+Failed to start httpd@second.service: Unit not found.
+[root@localhost sysconfig]# systemctl start httpd@first
+Failed to start httpd@first.service: Unit not found.
+[root@localhost sysconfig]# 
 
 ```
-
