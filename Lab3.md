@@ -197,8 +197,11 @@ python myfork.py
 4. какой PID у основного процесса
 + 15097
 5. убейте основной процесс ```kill -9 <pid>```
+![](screenshots/linux3.png)
 6. какой PPID стал у первого чайлда
-7. насколько вы разобрались в скрипте и втом что он делает?
++ 15098
+7. насколько вы разобрались в скрипте и в том что он делает?
++ Скрипт запускает основной процесс, потом запускает дочерний процесс. Если его PID - 0, то это дочерний процесс. Иначе же - это сам процесс.
 
 ---
 
@@ -206,6 +209,7 @@ python myfork.py
 * запустим еще раз наш процесс
 * убьем процесс первого чайлда
 * проверим его состояние  и убедимся что он зомби
+![](screenshots/linux4.png)
 * остановим основной процесс
 * расскоментируем строки в скрипте
 ```python
@@ -214,6 +218,7 @@ python myfork.py
 ```
 * поторим все еще раз
 * отследим корректное завершение чайлда
+![](screenshots/linux5.png)
 
 ---
 ## Научимся убивать зомби процессы
@@ -225,18 +230,10 @@ gdb
 > detach
 > quit
 ```
-
----
-## Проблемы при отмонтировании директории
-```bash
-cd /mnt/mai
-# в другом терминале
-sudo umount /mnt/mai
-fuser -v /mnt/dir
-```
-* Напишите какие процессы мешают размонтировать директорию
-* посмотрите ```lsof -p <pid>``` этих процессов
-* убейте мешаюший процесс и размонтируйте директорию
+![](screenshots/linux6.png)
+![](screenshots/linux7.png)
+![](screenshots/linux8.png)
+![](screenshots/linux9.png)
 
 ---
 
@@ -244,6 +241,7 @@ fuser -v /mnt/dir
 * создадим директорию ~/myfiles
 * запустим файл test_write.py из ранее созданной директории
 * проверим в другом терминале что в этой директории создался файл и он увеличивается в размере
+![](screenshots/linux11.png)
 * в первом терминали нажмем Ctrl+Z
 * проверим статус файла
 * выполним команды
@@ -258,24 +256,218 @@ fg
 df 
 du -sh  ~/myfiles
 ```
+
+```bash
+Файл.система   1K-блоков Использовано Доступно Использовано% Cмонтировано в
+udev             1937236            0  1937236            0% /dev
+tmpfs             391980         1736   390244            1% /run
+/dev/sda6       82045276     13051120 64783488           17% /
+tmpfs            1959888        57720  1902168            3% /dev/shm
+tmpfs               5120            4     5116            1% /run/lock
+tmpfs            1959888            0  1959888            0% /sys/fs/cgroup
+/dev/loop0         55936        55936        0          100% /snap/core18/1279
+/dev/loop1          6016         6016        0          100% /snap/tor/2
+/dev/loop2        210944       210944        0          100% /snap/gitkraken/146
+/dev/loop3         43904        43904        0          100% /snap/gtk-common-themes/1313
+/dev/loop4           256          256        0          100% /snap/gtk2-common-themes/5
+/dev/loop6         55936        55936        0          100% /snap/core18/1265
+/dev/loop7          3840         3840        0          100% /snap/gnome-system-monitor/111
+/dev/loop5        177664       177664        0          100% /snap/skype/109
+/dev/loop8        151808       151808        0          100% /snap/chromium/971
+/dev/loop9         91264        91264        0          100% /snap/core/8213
+/dev/loop11         3840         3840        0          100% /snap/gnome-system-monitor/123
+/dev/loop10       141056       141056        0          100% /snap/code/23
+/dev/loop12       141056       141056        0          100% /snap/code/22
+/dev/loop14         1024         1024        0          100% /snap/gnome-logs/81
+/dev/loop15       217472       217472        0          100% /snap/tuxguitar-vs/10
+/dev/loop13         4224         4224        0          100% /snap/gnome-calculator/406
+/dev/loop16       159872       159872        0          100% /snap/gnome-3-28-1804/91
+/dev/loop17       211456       211456        0          100% /snap/gitkraken/147
+/dev/loop19       157184       157184        0          100% /snap/chromium/958
+/dev/loop18        45312        45312        0          100% /snap/gtk-common-themes/1353
+/dev/loop20        97408        97408        0          100% /snap/telegram-desktop/994
+/dev/loop21       160384       160384        0          100% /snap/blender/34
+/dev/loop22        91264        91264        0          100% /snap/core/8268
+/dev/loop23       188928       188928        0          100% /snap/tuxguitar-vs/9
+/dev/loop24       185472       185472        0          100% /snap/spotify/36
+/dev/loop26       177664       177664        0          100% /snap/skype/107
+/dev/loop25       160512       160512        0          100% /snap/gnome-3-28-1804/110
+/dev/loop27       419328       419328        0          100% /snap/gimp/227
+/dev/loop30         4352         4352        0          100% /snap/gnome-calculator/544
+/dev/loop29         1024         1024        0          100% /snap/gnome-logs/61
+/dev/loop28        15104        15104        0          100% /snap/gnome-characters/367
+/dev/loop32       120704       120704        0          100% /snap/blender/33
+/dev/loop31        15104        15104        0          100% /snap/gnome-characters/375
+/dev/sda7      137007152     73562020 56415836           57% /home
+tmpfs             391976           24   391952            1% /run/user/1000
+```
+```bash
+3,6G	/home/milkolad/myfiles
+```
+
 * удалим файл
 * повторно проверим размеры кталога и файловой системы
+```bash
+milkolad@milkolad:~/myfiles$ rm myfile
+milkolad@milkolad:~/myfiles$ df
+Файл.система   1K-блоков Использовано Доступно Использовано% Cмонтировано в
+udev             1937236            0  1937236            0% /dev
+tmpfs             391980         1728   390252            1% /run
+/dev/sda6       82045276     13051124 64783484           17% /
+tmpfs            1959888        59000  1900888            4% /dev/shm
+tmpfs               5120            4     5116            1% /run/lock
+tmpfs            1959888            0  1959888            0% /sys/fs/cgroup
+/dev/loop0         55936        55936        0          100% /snap/core18/1279
+/dev/loop1          6016         6016        0          100% /snap/tor/2
+/dev/loop2        210944       210944        0          100% /snap/gitkraken/146
+/dev/loop3         43904        43904        0          100% /snap/gtk-common-themes/1313
+/dev/loop4           256          256        0          100% /snap/gtk2-common-themes/5
+/dev/loop6         55936        55936        0          100% /snap/core18/1265
+/dev/loop7          3840         3840        0          100% /snap/gnome-system-monitor/111
+/dev/loop5        177664       177664        0          100% /snap/skype/109
+/dev/loop8        151808       151808        0          100% /snap/chromium/971
+/dev/loop9         91264        91264        0          100% /snap/core/8213
+/dev/loop11         3840         3840        0          100% /snap/gnome-system-monitor/123
+/dev/loop10       141056       141056        0          100% /snap/code/23
+/dev/loop12       141056       141056        0          100% /snap/code/22
+/dev/loop14         1024         1024        0          100% /snap/gnome-logs/81
+/dev/loop15       217472       217472        0          100% /snap/tuxguitar-vs/10
+/dev/loop13         4224         4224        0          100% /snap/gnome-calculator/406
+/dev/loop16       159872       159872        0          100% /snap/gnome-3-28-1804/91
+/dev/loop17       211456       211456        0          100% /snap/gitkraken/147
+/dev/loop19       157184       157184        0          100% /snap/chromium/958
+/dev/loop18        45312        45312        0          100% /snap/gtk-common-themes/1353
+/dev/loop20        97408        97408        0          100% /snap/telegram-desktop/994
+/dev/loop21       160384       160384        0          100% /snap/blender/34
+/dev/loop22        91264        91264        0          100% /snap/core/8268
+/dev/loop23       188928       188928        0          100% /snap/tuxguitar-vs/9
+/dev/loop24       185472       185472        0          100% /snap/spotify/36
+/dev/loop26       177664       177664        0          100% /snap/skype/107
+/dev/loop25       160512       160512        0          100% /snap/gnome-3-28-1804/110
+/dev/loop27       419328       419328        0          100% /snap/gimp/227
+/dev/loop30         4352         4352        0          100% /snap/gnome-calculator/544
+/dev/loop29         1024         1024        0          100% /snap/gnome-logs/61
+/dev/loop28        15104        15104        0          100% /snap/gnome-characters/367
+/dev/loop32       120704       120704        0          100% /snap/blender/33
+/dev/loop31        15104        15104        0          100% /snap/gnome-characters/375
+/dev/sda7      137007152     78315632 51662224           61% /home
+tmpfs             391976           20   391956            1% /run/user/1000
+```
+```bash
+milkolad@milkolad:~/myfiles$ du -sh  ~/myfiles
+8,0K	/home/milkolad/myfiles
+```
+
 * Какую систуацию вы видите, как вы это объясните
+  + Мы запустили скрипт, который в бесконечном цикле пишет что-то в файл
 * Подключитесь к процессу через ```strace -p <pid>``` и назовите дескриптор файла, куда пишет процесс
+```bash
+read(4, "~3E\367\22: \300\t\240 9\272\207\214\257t\356\231J\247\302\364\\\212@\220a\352n\333y"..., 1024) = 1024
+write(3, "\305\312\276M\n\244\1\230H\"\231\366?\340\224\n\3628q\242\326\207O\233\35\274\206\37\224\265\0211"..., 4096) = 4096
+fstat(4, {st_mode=S_IFCHR|0666, st_rdev=makedev(1, 9), ...}) = 0
+
+```
+
 * проверим какие файлы открыты у нашего процесса через команду lsof -p <pid>
+  
+```bash
+milkolad@milkolad:~/myfiles$ lsof -p 6685
+COMMAND  PID     USER   FD   TYPE DEVICE   SIZE/OFF    NODE NAME
+python  6685 milkolad  cwd    DIR    8,7       4096 7341041 /home/milkolad/myfiles
+python  6685 milkolad  rtd    DIR    8,6       4096       2 /
+python  6685 milkolad  txt    REG    8,6    3637096 3147897 /usr/bin/python2.7
+python  6685 milkolad  mem    REG    8,6   10281936 3152605 /usr/lib/locale/locale-archive
+python  6685 milkolad  mem    REG    8,6    1700792  136442 /lib/x86_64-linux-gnu/libm-2.27.so
+python  6685 milkolad  mem    REG    8,6     116960  136551 /lib/x86_64-linux-gnu/libz.so.1.2.11
+python  6685 milkolad  mem    REG    8,6      10592  136544 /lib/x86_64-linux-gnu/libutil-2.27.so
+python  6685 milkolad  mem    REG    8,6      14560  136402 /lib/x86_64-linux-gnu/libdl-2.27.so
+python  6685 milkolad  mem    REG    8,6     144976  136512 /lib/x86_64-linux-gnu/libpthread-2.27.so
+python  6685 milkolad  mem    REG    8,6    2030544  136379 /lib/x86_64-linux-gnu/libc-2.27.so
+python  6685 milkolad  mem    REG    8,6     170960  136351 /lib/x86_64-linux-gnu/ld-2.27.so
+python  6685 milkolad    0u   CHR  136,0        0t0       3 /dev/pts/0
+python  6685 milkolad    1u   CHR  136,0        0t0       3 /dev/pts/0
+python  6685 milkolad    2u   CHR  136,0        0t0       3 /dev/pts/0
+python  6685 milkolad    3w   REG    8,7 9860182016 7341044 /home/milkolad/myfiles/myfile
+python  6685 milkolad    4r   CHR    1,9        0t0      11 /dev/urandom
+```
 * убьем процесс
 * еще раз прорим размер файловой системы и каталога
+```bash
+milkolad@milkolad:~/myfiles$ python test_write.py
+0^[[A^[[A[1]+  Убито              python test_write.py
+Убито
+milkolad@milkolad:~/myfiles$ df
+Файл.система   1K-блоков Использовано Доступно Использовано% Cмонтировано в
+udev             1937236            0  1937236            0% /dev
+tmpfs             391980         1728   390252            1% /run
+/dev/sda6       82045276     13051584 64783024           17% /
+tmpfs            1959888        59640  1900248            4% /dev/shm
+tmpfs               5120            4     5116            1% /run/lock
+tmpfs            1959888            0  1959888            0% /sys/fs/cgroup
+/dev/loop0         55936        55936        0          100% /snap/core18/1279
+/dev/loop1          6016         6016        0          100% /snap/tor/2
+/dev/loop2        210944       210944        0          100% /snap/gitkraken/146
+/dev/loop3         43904        43904        0          100% /snap/gtk-common-themes/1313
+/dev/loop4           256          256        0          100% /snap/gtk2-common-themes/5
+/dev/loop6         55936        55936        0          100% /snap/core18/1265
+/dev/loop7          3840         3840        0          100% /snap/gnome-system-monitor/111
+/dev/loop5        177664       177664        0          100% /snap/skype/109
+/dev/loop8        151808       151808        0          100% /snap/chromium/971
+/dev/loop9         91264        91264        0          100% /snap/core/8213
+/dev/loop11         3840         3840        0          100% /snap/gnome-system-monitor/123
+/dev/loop10       141056       141056        0          100% /snap/code/23
+/dev/loop12       141056       141056        0          100% /snap/code/22
+/dev/loop14         1024         1024        0          100% /snap/gnome-logs/81
+/dev/loop15       217472       217472        0          100% /snap/tuxguitar-vs/10
+/dev/loop13         4224         4224        0          100% /snap/gnome-calculator/406
+/dev/loop16       159872       159872        0          100% /snap/gnome-3-28-1804/91
+/dev/loop17       211456       211456        0          100% /snap/gitkraken/147
+/dev/loop19       157184       157184        0          100% /snap/chromium/958
+/dev/loop18        45312        45312        0          100% /snap/gtk-common-themes/1353
+/dev/loop20        97408        97408        0          100% /snap/telegram-desktop/994
+/dev/loop21       160384       160384        0          100% /snap/blender/34
+/dev/loop22        91264        91264        0          100% /snap/core/8268
+/dev/loop23       188928       188928        0          100% /snap/tuxguitar-vs/9
+/dev/loop24       185472       185472        0          100% /snap/spotify/36
+/dev/loop26       177664       177664        0          100% /snap/skype/107
+/dev/loop25       160512       160512        0          100% /snap/gnome-3-28-1804/110
+/dev/loop27       419328       419328        0          100% /snap/gimp/227
+/dev/loop30         4352         4352        0          100% /snap/gnome-calculator/544
+/dev/loop29         1024         1024        0          100% /snap/gnome-logs/61
+/dev/loop28        15104        15104        0          100% /snap/gnome-characters/367
+/dev/loop32       120704       120704        0          100% /snap/blender/33
+/dev/loop31        15104        15104        0          100% /snap/gnome-characters/375
+/dev/sda7      137007152     82226260 47751596           64% /home
+tmpfs             391976           20   391956            1% /run/user/1000
+milkolad@milkolad:~/myfiles$ du -sh  ~/myfiles
+9,8G	/home/milkolad/myfiles
+```
 * Напишите свое объяснение, что произошло
+  + Мы завершили процесс, который писал в файл
 
 ---
 
 ## Утилиты наблюдения
 * C помощью утилит мониторинга 
-* проверьте текущий LA 
+* проверьте текущий LA
+```bash
+milkolad@milkolad:~/myfiles$ uptime
+ 13:27:58 up  1:13,  1 user,  load average: 1,27, 1,28, 1,39
+```
 * запишите top 3 процессов загружающих CPU
-* запишите top 3 процессов загружающих память 
-* запустите утилиту atop как сервис через systemd
+```bash
+ 4584 milkolad  20   0  731664  55136  29708 S   5,9  1,4   1:43.72 gnome-ter+ 
+ 1503 milkolad  20   0  465776  69484  50564 S   5,3  1,8   5:33.80 Xorg       
+ 7474 milkolad  20   0   51392   4260   3560 R   1,3  0,1   0:00.39 top
+ ```
+* запишите top 3 процессов загружающих память
+```bash
+2949 milkolad  20   0 1135292 252548 123404 S   2,6  6,4   4:10.01 chrome     
+ 3109 milkolad  20   0  943708 206816  68616 S   0,0  5,3   0:23.75 chrome     
+ 7080 milkolad  20   0  856504 174312  91776 S   1,0  4,4   0:31.35 chrome
+ ```
 * запустите dd на генерацию файла размер в 3 гигабайта
+  + dd of=file bs=1 count=0 seek=3G
 * удалите сгенеренный файл
-* через atop скажите какой  pid был у процесса
 * Проанализируйте нагрузку на диск через утилиты  iotop и iostat
+![](screenshots/linux12.png)
